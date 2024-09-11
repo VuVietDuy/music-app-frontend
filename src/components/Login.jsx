@@ -6,7 +6,7 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { actionType } from "../context/reducer";
 import { useStateValue } from "../context/StateProvider";
-import { valiateUser } from "../api";
+import { validateUser } from "../api";
 
 export default function Login({ setAuth }) {
   const firebaseAuth = getAuth(app);
@@ -23,11 +23,11 @@ export default function Login({ setAuth }) {
 
         firebaseAuth.onAuthStateChanged((userCred) => {
           if (userCred) {
-            userCred.getIdToken.then((token) => {
-              valiateUser(token).then((res) => {
+            userCred.getIdToken().then((token) => {
+              validateUser(token).then((res) => {
                 dispatch({
                   type: actionType.SET_USER,
-                  user: res.data.data,
+                  user: res.data,
                 });
               });
             });
